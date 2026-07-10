@@ -18,6 +18,7 @@ import UserPage from "@/features/users/pages/UserPage";
 import WorkflowPage from "@/features/workflow/pages/WorkflowPage";
 import DashboardPage from "@/features/dashboard/pages/DashboardPage";
 import RequestPage  from "@/features/requests/pages/RequestPage";
+import ApprovalPage from "@/features/approvals/pages/ApprovalPage";
 
 export default function AppRoutes() {
     return (
@@ -61,6 +62,10 @@ export default function AppRoutes() {
                     <Route
                         path="/users"
                         element={<UserPage />}
+                    />
+                    <Route 
+                    path="/approvals"
+                    element={<ApprovalPage />}
                     />
                     <Route
     path="/requests"
