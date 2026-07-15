@@ -26,6 +26,10 @@ const menus = [
         path: "/requests",
     },
     {
+        title: "Notifications",
+        path: "/notifications",
+    },
+    {
         title: "FileUploads",
         path: "/file-uploads",
     },

@@ -19,6 +19,8 @@ import WorkflowPage from "@/features/workflow/pages/WorkflowPage";
 import DashboardPage from "@/features/dashboard/pages/DashboardPage";
 import RequestPage  from "@/features/requests/pages/RequestPage";
 import ApprovalPage from "@/features/approvals/pages/ApprovalPage";
+import FileUploadPage from "@/features/file-uploads/pages/FileUploadPage";
+import NotificationPage from "@/features/notifications/pages/NotificationPage";
 
 export default function AppRoutes() {
     return (
@@ -63,9 +65,21 @@ export default function AppRoutes() {
                         path="/users"
                         element={<UserPage />}
                     />
+                    <Route
+                        path="/file-uploads"
+                        element={<FileUploadPage />}
+                    />
+                    <Route
+                        path="/requests"
+                        element={<RequestPage />}
+                    />
                     <Route 
                     path="/approvals"
                     element={<ApprovalPage />}
+                    />
+                    <Route
+                        path="/notifications"
+                        element={<NotificationPage />}
                     />
                     <Route
     path="/requests"

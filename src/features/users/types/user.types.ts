@@ -5,6 +5,7 @@ export interface User {
     email: string;
     isActive: boolean;
     departmentId: string;
+    departmentName?: string; // Add this for display
 }
 
 export interface CreateUserRequest {
