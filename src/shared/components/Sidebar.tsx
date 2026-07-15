@@ -26,6 +26,10 @@ const menus = [
         path: "/requests",
     },
     {
+        title: "FileUploads",
+        path: "/file-uploads",
+    },
+    {
         title: "Approvals",
         path: "/approvals",
     },

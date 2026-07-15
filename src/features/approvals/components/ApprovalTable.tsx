@@ -34,8 +34,11 @@ export default function ApprovalTable({ approverId }: Props) {
     return (
         <>
             <div className="overflow-hidden rounded-xl bg-white shadow border border-gray-100">
-                <div className="border-b border-gray-100 p-6 bg-gray-50/50">
+                <div className="border-b border-gray-100 p-6 bg-gray-50/50 flex justify-between items-center">
                     <h2 className="text-lg font-bold text-gray-800">Pending Actions Queue</h2>
+                    <span className="text-sm text-gray-500 bg-white px-3 py-1 rounded-full border border-gray-200">
+                        {approvals.length} pending
+                    </span>
                 </div>
 
                 {approvals.length === 0 ? (
@@ -52,12 +55,12 @@ export default function ApprovalTable({ approverId }: Props) {
                                     <th className="px-6 py-3.5">Amount</th>
                                     <th className="px-6 py-3.5">Workflow Step</th>
                                     <th className="px-6 py-3.5">Pipeline Status</th>
-                                    <th className="px-6 py-3.5 text-center">Process</th>
+                                    <th className="px-6 py-3.5 text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100 text-gray-700">
                                 {approvals.map((item) => (
-                                    <tr key={item.approvalStepId} className="hover:bg-gray-50/40 transition-colors">
+                                    <tr key={item.approvalStepId} className="hover:bg-gray-50/40 transition-colors group">
                                         <td className="px-6 py-4 font-bold text-gray-900">{item.title}</td>
                                         <td className="px-6 py-4 text-gray-600">{item.requestedByName}</td>
                                         <td className="px-6 py-4 font-semibold text-gray-900">₦{item.amount.toLocaleString()}</td>
@@ -77,9 +80,10 @@ export default function ApprovalTable({ approverId }: Props) {
                                                     setSelectedApproval(item);
                                                     setOpen(true);
                                                 }}
-                                                className="inline-flex items-center justify-center p-2 rounded-lg text-emerald-600 hover:bg-emerald-50 transition-all border border-emerald-100 bg-emerald-50/10 shadow-sm"
+                                                className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm hover:shadow-md"
                                             >
-                                                <CheckCircle size={18} />
+                                                <CheckCircle size={16} />
+                                                Review
                                             </button>
                                         </td>
                                     </tr>

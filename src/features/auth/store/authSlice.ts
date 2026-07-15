@@ -44,6 +44,10 @@ const authSlice = createSlice({
 
             saveToken(action.payload.token);
             localStorage.setItem("expiresAt", action.payload.expiresAt);
+            
+            // ADD THIS - Save userId for approval page
+            localStorage.setItem("userId", action.payload.id);
+            localStorage.setItem("userEmail", action.payload.email);
         },
 
         logout(state) {
@@ -55,6 +59,19 @@ const authSlice = createSlice({
 
             removeToken();
             localStorage.removeItem("expiresAt");
+            
+            // ADD THESE - Clear all user data
+            localStorage.removeItem("userId");
+            localStorage.removeItem("userEmail");
+            localStorage.removeItem("firstName");
+            localStorage.removeItem("lastName");
+            localStorage.removeItem("token");
+            
+            // Optional: Clear everything
+            // localStorage.clear();
+            
+            //Redirect to login page
+            window.location.href = "/login";
         },
     },
 });
