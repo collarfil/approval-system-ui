@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { CheckCircle, Loader2 } from "lucide-react";
+import { CheckCircle, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useApprovals } from "../hooks/useApprovals";
+import { usePagination } from "@/shared/hooks/usePagination";
+import Pagination from "@/shared/components/Pagination";
 import ApprovalActionModal from "./ApprovalActionModal";
 import type { PendingApproval } from "../types/approval.types";
 
@@ -13,6 +15,19 @@ export default function ApprovalTable({ approverId }: Props) {
     const [selectedApproval, setSelectedApproval] = useState<PendingApproval | null>(null);
 
     const { data: approvals = [], isLoading, isError } = useApprovals(approverId);
+
+    const {
+        currentPage,
+        pageSize,
+        totalPages,
+        totalItems,
+        paginatedData,
+        goToPage,
+        changePageSize,
+    } = usePagination({
+        data: approvals,
+        pageSize: 10,
+    });
 
     if (isLoading) {
         return (
@@ -37,11 +52,11 @@ export default function ApprovalTable({ approverId }: Props) {
                 <div className="border-b border-gray-100 p-6 bg-gray-50/50 flex justify-between items-center">
                     <h2 className="text-lg font-bold text-gray-800">Pending Actions Queue</h2>
                     <span className="text-sm text-gray-500 bg-white px-3 py-1 rounded-full border border-gray-200">
-                        {approvals.length} pending
+                        {totalItems} pending
                     </span>
                 </div>
 
-                {approvals.length === 0 ? (
+                {paginatedData.length === 0 ? (
                     <div className="p-12 text-center text-gray-400 text-sm">
                         No pending items require your immediate authorization profile.
                     </div>
@@ -59,7 +74,7 @@ export default function ApprovalTable({ approverId }: Props) {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100 text-gray-700">
-                                {approvals.map((item) => (
+                                {paginatedData.map((item) => (
                                     <tr key={item.approvalStepId} className="hover:bg-gray-50/40 transition-colors group">
                                         <td className="px-6 py-4 font-bold text-gray-900">{item.title}</td>
                                         <td className="px-6 py-4 text-gray-600">{item.requestedByName}</td>
@@ -80,10 +95,10 @@ export default function ApprovalTable({ approverId }: Props) {
                                                     setSelectedApproval(item);
                                                     setOpen(true);
                                                 }}
-                                                className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm hover:shadow-md"
+                                                className="inline-flex items-center justify-center p-2 rounded-lg text-emerald-600 hover:bg-emerald-50 transition-all border border-emerald-100 bg-emerald-50/10 shadow-sm"
+                                                title="Review"
                                             >
-                                                <CheckCircle size={16} />
-                                                Review
+                                                <CheckCircle size={18} />
                                             </button>
                                         </td>
                                     </tr>
@@ -93,6 +108,15 @@ export default function ApprovalTable({ approverId }: Props) {
                     </div>
                 )}
             </div>
+
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                pageSize={pageSize}
+                totalItems={totalItems}
+                onPageChange={goToPage}
+                onPageSizeChange={changePageSize}
+            />
 
             {selectedApproval && (
                 <ApprovalActionModal

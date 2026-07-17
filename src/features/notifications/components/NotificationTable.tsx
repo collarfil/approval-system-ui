@@ -1,13 +1,28 @@
 import { useState } from "react";
 import { Plus, Trash2, CheckCircle, Bell } from "lucide-react";
 import { useNotifications, useDeleteNotification, useMarkAsRead } from "../hooks/useNotifications";
+import { usePagination } from "@/shared/hooks/usePagination";
+import Pagination from "@/shared/components/Pagination";
 import CreateNotificationModal from "./CreateNotificationModal";
 
 export default function NotificationTable() {
-    const { data, isLoading } = useNotifications();
+    const { data = [], isLoading } = useNotifications();
     const deleteMutation = useDeleteNotification();
     const markAsReadMutation = useMarkAsRead();
     const [open, setOpen] = useState(false);
+
+    const {
+        currentPage,
+        pageSize,
+        totalPages,
+        totalItems,
+        paginatedData,
+        goToPage,
+        changePageSize,
+    } = usePagination({
+        data,
+        pageSize: 10,
+    });
 
     if (isLoading) {
         return <p className="py-8 text-center">Loading notifications...</p>;
@@ -41,7 +56,7 @@ export default function NotificationTable() {
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.length === 0 && (
+                        {paginatedData.length === 0 && (
                             <tr>
                                 <td colSpan={6} className="py-8 text-center text-gray-500">
                                     No notifications found.
@@ -49,7 +64,7 @@ export default function NotificationTable() {
                             </tr>
                         )}
 
-                        {data?.map((notification) => (
+                        {paginatedData.map((notification) => (
                             <tr key={notification.id} className="border-t hover:bg-gray-50">
                                 <td className="px-4 py-3 font-medium">{notification.title}</td>
                                 <td className="px-4 py-3">{notification.message}</td>
@@ -94,6 +109,15 @@ export default function NotificationTable() {
                     </tbody>
                 </table>
             </div>
+
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                pageSize={pageSize}
+                totalItems={totalItems}
+                onPageChange={goToPage}
+                onPageSizeChange={changePageSize}
+            />
         </div>
     );
 }

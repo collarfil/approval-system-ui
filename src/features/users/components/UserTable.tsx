@@ -2,12 +2,27 @@ import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import { useUsersWithDepartments } from "../hooks/useUsersWithDepartments";
 import { useDeleteUser } from "../hooks/useDeleteUser";
+import { usePagination } from "@/shared/hooks/usePagination";
+import Pagination from "@/shared/components/Pagination";
 import CreateUserModal from "./CreateUserModal";
 
 export default function UserTable() {
-    const { data: users, isLoading } = useUsersWithDepartments();
+    const { data: users = [], isLoading } = useUsersWithDepartments();
     const deleteMutation = useDeleteUser();
     const [open, setOpen] = useState(false);
+
+    const {
+        currentPage,
+        pageSize,
+        totalPages,
+        totalItems,
+        paginatedData,
+        goToPage,
+        changePageSize,
+    } = usePagination({
+        data: users,
+        pageSize: 10,
+    });
 
     if (isLoading) {
         return <p className="py-8 text-center">Loading users...</p>;
@@ -41,7 +56,7 @@ export default function UserTable() {
                         </tr>
                     </thead>
                     <tbody>
-                        {users?.length === 0 && (
+                        {paginatedData.length === 0 && (
                             <tr>
                                 <td colSpan={6} className="py-8 text-center text-gray-500">
                                     No users found.
@@ -49,13 +64,12 @@ export default function UserTable() {
                             </tr>
                         )}
 
-                        {users?.map((user) => (
+                        {paginatedData.map((user) => (
                             <tr key={user.id} className="border-t hover:bg-gray-50">
                                 <td className="px-4 py-3">{user.firstName}</td>
                                 <td className="px-4 py-3">{user.lastName}</td>
                                 <td className="px-4 py-3">{user.email}</td>
                                 <td className="px-4 py-3">
-                                    {/* Display department name instead of ID */}
                                     {user.departmentName || "No Department"}
                                 </td>
                                 <td className="px-4 py-3">
@@ -83,6 +97,15 @@ export default function UserTable() {
                     </tbody>
                 </table>
             </div>
+
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                pageSize={pageSize}
+                totalItems={totalItems}
+                onPageChange={goToPage}
+                onPageSizeChange={changePageSize}
+            />
         </div>
     );
 }

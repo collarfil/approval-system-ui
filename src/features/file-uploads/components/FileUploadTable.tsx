@@ -1,12 +1,27 @@
 import { useState } from "react";
 import { Plus, Trash2, File, Download } from "lucide-react";
 import { useFileUploads, useDeleteFileUpload } from "../hooks/useFileUploads";
+import { usePagination } from "@/shared/hooks/usePagination";
+import Pagination from "@/shared/components/Pagination";
 import CreateFileUploadModal from "./CreateFileUploadModal";
 
 export default function FileUploadTable() {
-    const { data, isLoading } = useFileUploads();
+    const { data = [], isLoading } = useFileUploads();
     const deleteMutation = useDeleteFileUpload();
     const [open, setOpen] = useState(false);
+
+    const {
+        currentPage,
+        pageSize,
+        totalPages,
+        totalItems,
+        paginatedData,
+        goToPage,
+        changePageSize,
+    } = usePagination({
+        data,
+        pageSize: 10,
+    });
 
     const formatFileSize = (bytes: number): string => {
         if (bytes < 1024) return bytes + " B";
@@ -55,7 +70,7 @@ export default function FileUploadTable() {
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.length === 0 && (
+                        {paginatedData.length === 0 && (
                             <tr>
                                 <td colSpan={6} className="py-8 text-center text-gray-500">
                                     No files found.
@@ -63,7 +78,7 @@ export default function FileUploadTable() {
                             </tr>
                         )}
 
-                        {data?.map((file) => (
+                        {paginatedData.map((file) => (
                             <tr key={file.id} className="border-t hover:bg-gray-50">
                                 <td className="px-4 py-3">
                                     <div className="flex items-center gap-2">
@@ -104,6 +119,15 @@ export default function FileUploadTable() {
                     </tbody>
                 </table>
             </div>
+
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                pageSize={pageSize}
+                totalItems={totalItems}
+                onPageChange={goToPage}
+                onPageSizeChange={changePageSize}
+            />
         </div>
     );
 }

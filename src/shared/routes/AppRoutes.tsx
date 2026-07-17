@@ -21,6 +21,8 @@ import RequestPage  from "@/features/requests/pages/RequestPage";
 import ApprovalPage from "@/features/approvals/pages/ApprovalPage";
 import FileUploadPage from "@/features/file-uploads/pages/FileUploadPage";
 import NotificationPage from "@/features/notifications/pages/NotificationPage";
+import AuditLogPage from "@/features/audit-log/pages/AuditLogPage";
+import ReportPage from "@/features/reports/pages/ReportPage";
 
 export default function AppRoutes() {
     return (
@@ -80,6 +82,14 @@ export default function AppRoutes() {
                     <Route
                         path="/notifications"
                         element={<NotificationPage />}
+                    />
+                    <Route
+                    path="/reports"
+                    element={<ReportPage />}
+                    />
+                    <Route 
+                    path="/audit-logs"
+                    element={<AuditLogPage />}
                     />
                     <Route
     path="/requests"

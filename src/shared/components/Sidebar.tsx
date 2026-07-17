@@ -38,6 +38,10 @@ const menus = [
         path: "/approvals",
     },
     {
+        title: "Audit Logs",
+        path: "/audit-logs",
+    },
+    {
         title: "Reports",
         path: "/reports",
     },
