@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import { CheckCircle, Loader2 } from "lucide-react";
 import { useApprovals } from "../hooks/useApprovals";
 import { usePagination } from "@/shared/hooks/usePagination";
 import Pagination from "@/shared/components/Pagination";
